@@ -2,9 +2,10 @@
   "name": "koasse",
   "version": "1.0.0",
   "description": "Koa.JS sample with SSE support",
-  "main": "index.js",
+  "main": "koa-index.js",
   "dependencies": {
-    "koa": "^2.7.0"
+    "koa": "^2.7.0",
+    "koa-router": "^7.4.0"
   },
   "devDependencies": {},
   "scripts": {
