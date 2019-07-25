@@ -1,10 +1,9 @@
-var Koa = require('koa');
-var Router = require('koa-router');
+const Koa = require('koa');
+const Router = require('koa-router');
 
-var app = new Koa();
-var router = new Router();
+const app = new Koa();
 
-app.use(router.routes());
+// middleware
 
 async function responseTime(ctx, next) {
     var start = Date.now();
@@ -22,8 +21,15 @@ async function logger(ctx, next) {
 app.use(responseTime);
 app.use(logger);
 
-app.use(async (ctx) => {
-    ctx.body = "OK";
-});
+// routing
+
+var router = new Router();
+router
+    .get("/", (ctx) => { ctx.body = "OK"; })
+    .get("/time", ctx => { ctx.body = Date.now(); });
+
+app.use(router.routes());
+
+// server
 
 app.listen(3000);
