@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: myhelloworld-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: myhelloworld
+  template:
+    metadata:
+      labels:
+        run: myhelloworld
+    spec:
+      containers:
+      - image: karthequian/helloworld
+        name: myhelloworld
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myhelloworld-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: myhelloworld
+  type: LoadBalancer
