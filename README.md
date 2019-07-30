@@ -1,2 +1,3 @@
-# koasse
-Koa.JS sample with SSE support
+# Koa SSE Sample
+
+Playground for trying KOA and SSE and etc.

@@ -1,11 +1,11 @@
-const Koa = require('koa');
-const Router = require('koa-router');
+import Koa from 'koa';
+import Router from 'koa-router';
 
 const app = new Koa();
 
 // middleware
 
-async function responseTime(ctx, next) {
+async function responseTime(ctx: any, next: any) {
     var start = Date.now();
     await next();
     var end = Date.now();
@@ -13,7 +13,7 @@ async function responseTime(ctx, next) {
     ctx.set("X-Response-Time", `${ms} ms`);
 }
 
-async function logger(ctx, next) {
+async function logger(ctx: any, next: any) {
     console.log(ctx);
     await next();
 }

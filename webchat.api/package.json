@@ -1,0 +1,22 @@
+{
+  "name": "webchat.api",
+  "version": "1.0.0",
+  "description": "api for web chat",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc",
+    "start": "tsc && node index.js",
+    "prod": "node index.js",
+    "docker-image": "docker build -t webchat.api . && docker images"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^3.5.3",
+    "koa": "^2.7.0",
+    "koa-router": "^7.4.0",
+    "@types/koa": "^2.0.49",
+    "@types/koa-router": "^7.0.42"
+  }
+}

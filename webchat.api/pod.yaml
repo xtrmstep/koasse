@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webchat.api
+  labels:
+    app: webchat_api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webchat_api
+  template:
+    metadata:
+      labels:
+        app: webchat_api
+    spec:
+      containers:
+      - name: webchat_api
+        image: webchat.api
+        ports:
+        - containerPort: 80
+---
+kind: Service
