@@ -40,7 +40,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var koa_router_1 = __importDefault(require("koa-router"));
+var clients_1 = require("../types/clients");
 var router = new koa_router_1.default();
+var clients = clients_1.Clients.getInstance();
 exports.default = (function () {
     router
         .get('/', function (ctx) { return __awaiter(_this, void 0, void 0, function () {
@@ -49,31 +51,22 @@ exports.default = (function () {
             return [2 /*return*/];
         });
     }); })
-        /*.get('/:id', async (ctx, next) => {
-            ctx.body = "return some message";
-        })*/
         .post('/', function (ctx) { return __awaiter(_this, void 0, void 0, function () {
-        var body;
+        var userMessage;
         return __generator(this, function (_a) {
-            body = ctx.request.body;
-            console.log(body);
-            ctx.body = "posted a message";
+            userMessage = ctx.request.body;
+            console.log(userMessage);
+            clients.broadcast(userMessage.message, userMessage.userIndex);
             return [2 /*return*/];
         });
     }); })
         .get('/sse', function (ctx) { return __awaiter(_this, void 0, void 0, function () {
-        var n, interval;
+        var clientId;
         return __generator(this, function (_a) {
-            n = 0;
-            interval = setInterval(function () {
-                ctx.sse.send(new Date().toString());
-                n++;
-                if (n >= 5) {
-                    ctx.sse.end();
-                    clearInterval(interval);
-                }
-            }, 1000);
-            ctx.sse.on("finish", function () { return clearInterval(interval); });
+            clientId = clients.generateClientId();
+            clients.add(clientId, ctx.sse);
+            ctx.sse.on('close', function () { return clients.remove(clientId); });
+            ctx.status = 200;
             return [2 /*return*/];
         });
     }); });

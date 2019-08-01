@@ -3,17 +3,20 @@ import AppContext from "../../../appContext";
 import Message from './Message';
 
 class MessageBoard extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
+    this.onMessageReceived = this.onMessageReceived.bind(this);
+
     if (typeof EventSource !== "undefined") {
+
       let source = new EventSource('http://localhost:3000/messages/sse');
-      source.addEventListener('message', (e) => {
-        console.log(e.data);
-      }, false);
+      source.addEventListener('message', this.onMessageReceived, false);
+
       source.addEventListener('open', (e) => {
         console.log('opened');
-      },false);
+      }, false);
+
       source.addEventListener('error', (e) => {
         if (e.readyState == EventSource.CLOSED) {
           console.log('closed');
@@ -22,12 +25,19 @@ class MessageBoard extends Component {
     }
   }
 
+  onMessageReceived = (event) => {
+    console.log(event.data);
+    let msg = JSON.parse(event.data); // TODO need to receive JSON
+    this.props.addMessage(msg);
+  }
+
   render() {
     return (
       <AppContext.Consumer>
         {
           (state) => state.messages.map(message =>
-            <Message key={message.id} avatar={state.people.find(({ id }) => id === message.personId).avatar} {...message}/>
+            <Message key={message.id}
+                     avatar={state.people.find(({id}) => id === message.personId).avatar} {...message}/>
           )
         }
       </AppContext.Consumer>

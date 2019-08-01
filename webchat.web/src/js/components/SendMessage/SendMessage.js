@@ -9,9 +9,8 @@ class SendMessage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputMessage: '',
-      inputName: '',
-      inputAvatar: ''
+      inputIndex: '',
+      inputMessage: ''
     }
   }
 
@@ -19,6 +18,7 @@ class SendMessage extends Component {
   sendMessage = () => {
     try {
       axios.post('http://localhost:3000/messages', {
+        userIndex: this.state.inputIndex,
         message: this.state.inputMessage
       });
     } catch (error) {
@@ -30,12 +30,8 @@ class SendMessage extends Component {
     this.setState({inputMessage: event.target.value});
   }
 
-  inputNameChanged = (event) => {
-    this.setState({inputName: event.target.value});
-  }
-
-  inputAvatarChanged = (event) => {
-    this.setState({inputAvatar: event.target.value});
+  inputIndexChanged = (event) => {
+    this.setState({inputIndex: event.target.value});
   }
 
   render() {
@@ -43,19 +39,10 @@ class SendMessage extends Component {
       <Fragment>
         <Box>
           <TextField
-            id="user-name"
-            label="Name"
-            value={this.state.name}
-            onChange={this.inputNameChanged}
-            margin="normal"
-          />
-        </Box>
-        <Box>
-          <TextField
-            id="user-avatar"
-            label="Avatar URL"
-            value={this.state.avatar}
-            onChange={this.inputAvatarChanged}
+            id="user-index"
+            label="Index"
+            value={this.state.index}
+            onChange={this.inputIndexChanged}
             margin="normal"
           />
         </Box>
