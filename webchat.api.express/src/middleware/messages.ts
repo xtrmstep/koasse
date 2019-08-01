@@ -1,9 +1,11 @@
 import express from 'express';
 
+const sse = require('sse-nodejs');
+
 const router = express.Router();
 import {Clients} from '../types/clients';
 
-//const clients = Clients.getInstance();
+const clients = Clients.getInstance();
 
 interface UserMessage {
     userIndex : any;
@@ -17,20 +19,19 @@ router
     .post('/', async (req, res) => {
         const userMessage : UserMessage = req.body;
         console.log(userMessage);
-        //clients.broadcast(userMessage.message, userMessage.userIndex);
+        clients.broadcast(userMessage.message, userMessage.userIndex);
         res
             .status(200)
             .end();
     })
     .get('/sse', async (req, res) => {
 
-        console.log(req);
-        /*et clientId = clients.generateClientId();
-        clients.add(clientId, ctx.sse);
+        let app = sse(res, {heartbeat : true});
 
-        ctx.sse.on('close', () => clients.remove(clientId));
+        let clientId = clients.generateClientId();
+        clients.add(clientId, app);
 
-        ctx.status = 200;*/
+        app.disconnect(() => clients.remove(clientId));
     });
 
 export default router;

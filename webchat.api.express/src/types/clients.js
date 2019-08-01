@@ -16,7 +16,6 @@ var Clients = /** @class */ (function () {
         if (!client) {
             return;
         }
-        client.sse.end();
         delete this._clients[clientId];
         this.count--;
         /*this.broadcast(client.name + ' offline', '@ChatBot');*/

@@ -40,7 +40,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
+var sse = require('sse-nodejs');
 var router = express_1.default.Router();
+var clients_1 = require("../types/clients");
+var clients = clients_1.Clients.getInstance();
 router
     .get('/', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
     return __generator(this, function (_a) {
@@ -53,7 +56,7 @@ router
     return __generator(this, function (_a) {
         userMessage = req.body;
         console.log(userMessage);
-        //clients.broadcast(userMessage.message, userMessage.userIndex);
+        clients.broadcast(userMessage.message, userMessage.userIndex);
         res
             .status(200)
             .end();
@@ -61,8 +64,12 @@ router
     });
 }); })
     .get('/sse', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+    var app, clientId;
     return __generator(this, function (_a) {
-        console.log(req);
+        app = sse(res, { heartbeat: true });
+        clientId = clients.generateClientId();
+        clients.add(clientId, app);
+        app.disconnect(function () { return clients.remove(clientId); });
         return [2 /*return*/];
     });
 }); });

@@ -20,7 +20,6 @@ export class Clients {
         if (!client) {
             return;
         }
-        client.sse.end();
 
         delete this._clients[clientId];
         this.count--;

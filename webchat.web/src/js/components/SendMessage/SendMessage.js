@@ -17,7 +17,7 @@ class SendMessage extends Component {
   // TODO With async method it gives an error in console: regeneratorRuntime is not defined
   sendMessage = () => {
     try {
-      axios.post('http://localhost:3000/messages', {
+      axios.post('http://localhost:3001/messages', {
         userIndex: this.state.inputIndex,
         message: this.state.inputMessage
       });
