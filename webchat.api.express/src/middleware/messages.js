@@ -54,7 +54,9 @@ router
         userMessage = req.body;
         console.log(userMessage);
         //clients.broadcast(userMessage.message, userMessage.userIndex);
-        res.status(200).end();
+        res
+            .status(200)
+            .end();
         return [2 /*return*/];
     });
 }); })
