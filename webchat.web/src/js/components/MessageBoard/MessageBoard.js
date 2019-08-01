@@ -10,7 +10,7 @@ class MessageBoard extends Component {
 
     if (typeof EventSource !== "undefined") {
 
-      let source = new EventSource('http://localhost:3001/messages/sse');
+      let source = new EventSource('http://localhost:3000/messages/sse');
       source.addEventListener('message', this.onMessageReceived, false);
 
       source.addEventListener('open', (e) => {
