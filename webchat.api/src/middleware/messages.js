@@ -37,50 +37,45 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
-var koa_1 = __importDefault(require("koa"));
 var koa_router_1 = __importDefault(require("koa-router"));
-var app = new koa_1.default();
-// middleware
-function responseTime(ctx, next) {
-    return __awaiter(this, void 0, void 0, function () {
-        var start, end, ms;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    start = Date.now();
-                    return [4 /*yield*/, next()];
-                case 1:
-                    _a.sent();
-                    end = Date.now();
-                    ms = end - start;
-                    ctx.set("X-Response-Time", ms + " ms");
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-function logger(ctx, next) {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    console.log(ctx);
-                    return [4 /*yield*/, next()];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-app.use(responseTime);
-app.use(logger);
-// routing
 var router = new koa_router_1.default();
-router
-    .get("/", function (ctx) { ctx.body = "OK"; })
-    .get("/time", function (ctx) { ctx.body = Date.now(); });
-app.use(router.routes());
-// server
-app.listen(3000);
+exports.default = (function () {
+    router
+        .get('/', function (ctx) { return __awaiter(_this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            ctx.body = "return all messages";
+            return [2 /*return*/];
+        });
+    }); })
+        /*.get('/:id', async (ctx, next) => {
+            ctx.body = "return some message";
+        })*/
+        .post('/', function (ctx) { return __awaiter(_this, void 0, void 0, function () {
+        var body;
+        return __generator(this, function (_a) {
+            body = ctx.request.body;
+            console.log(body);
+            ctx.body = "posted a message";
+            return [2 /*return*/];
+        });
+    }); })
+        .get('/sse', function (ctx) { return __awaiter(_this, void 0, void 0, function () {
+        var n, interval;
+        return __generator(this, function (_a) {
+            n = 0;
+            interval = setInterval(function () {
+                ctx.sse.send(new Date().toString());
+                n++;
+                if (n >= 5) {
+                    ctx.sse.end();
+                    clearInterval(interval);
+                }
+            }, 1000);
+            ctx.sse.on("finish", function () { return clearInterval(interval); });
+            return [2 /*return*/];
+        });
+    }); });
+    return router.middleware();
+});

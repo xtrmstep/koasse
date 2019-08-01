@@ -3,9 +3,11 @@ import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 
+import axios from 'axios';
+
 class SendMessage extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       inputMessage: '',
       inputName: '',
@@ -13,13 +15,20 @@ class SendMessage extends Component {
     }
   }
 
+  // TODO With async method it gives an error in console: regeneratorRuntime is not defined
+  sendMessage = () => {
+    try {
+      axios.post('http://localhost:3000/messages', {
+        message: this.state.inputMessage
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   inputMessageChanged = (event) => {
     this.setState({inputMessage: event.target.value});
-  };
-
-  sendMessage = () => {
-    alert(this.state.inputMessage);
-  };
+  }
 
   inputNameChanged = (event) => {
     this.setState({inputName: event.target.value});
