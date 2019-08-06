@@ -1,3 +1,13 @@
-service Home {
-    rpc Get() returns (string) {}
+syntax = "proto3";
+
+package sample;
+
+service HomeService {
+    rpc List(Empty) returns (CustomText) {}
+}
+
+message Empty {}
+
+message CustomText {
+    string text = 1;
 }
