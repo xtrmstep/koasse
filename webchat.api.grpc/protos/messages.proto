@@ -1,0 +1,10 @@
+service Massages {
+    rpc GetMessages() returns (UserMessage[]) {}
+    rpc SendMessage(UserMessage) returns (string) {}
+    rpc Sse() returns (stream UserMessage) {}
+}
+
+message UserMessage {
+    string userIndex = 1;
+    string message = 2;
+}
